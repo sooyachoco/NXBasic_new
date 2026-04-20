@@ -1,10 +1,16 @@
-# GitHub Pages — 브라우저에서 live-tv_claude.html 제공
+# GitHub Pages — gh-pages 브랜치로 정적 사이트 배포
 #
-# 반드시 한 번 설정: 저장소 Settings → Pages → Build and deployment
-# → Source 를 "GitHub Actions" 로 선택한 뒤, Actions 탭에서 워크플로를 성공시키세요.
-# (Source가 "Deploy from a branch" 이거나 비어 있으면 *.github.io 에서 404가 납니다.)
+# ① 저장소 Settings → Actions → General → Workflow permissions
+#    → "Read and write permissions" 선택 후 저장 (토큰이 gh-pages에 푸시하려면 필요)
+#
+# ② 이 워크플로가 main에 푸시될 때마다 gh-pages 브랜치를 갱신합니다.
+#
+# ③ Settings → Pages → Build and deployment → Source: "Deploy from a branch"
+#    → Branch: gh-pages, Folder: / (root) 저장
+#
+# ④ 접속: https://sooyachoco.github.io/NXBasic_new/202605_NXlive/live-tv_claude.html
 
-name: Deploy GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -12,47 +18,28 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: gh-pages-deploy
+  cancel-in-progress: true
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/configure-pages@v5
 
       - name: Assemble static site
         run: |
           mkdir -p _site
           cp -r design-system 202605_NXlive _site/
-          cat > _site/index.html <<'HTML'
-          <!DOCTYPE html>
-          <html lang="ko">
-          <head>
-            <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <meta http-equiv="refresh" content="0; url=202605_NXlive/live-tv_claude.html" />
-            <title>NXBasic — Live TV</title>
-          </head>
-          <body>
-            <p><a href="202605_NXlive/live-tv_claude.html">Live TV 페이지로 이동</a></p>
-          </body>
-          </html>
-          HTML
+          echo '<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=202605_NXlive/live-tv_claude.html"><title>NXBasic</title></head><body><p><a href="202605_NXlive/live-tv_claude.html">Live TV 페이지로 이동</a></p></body></html>' > _site/index.html
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Publish gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: _site
-
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _site
+          publish_branch: gh-pages
+          force_orphan: true
