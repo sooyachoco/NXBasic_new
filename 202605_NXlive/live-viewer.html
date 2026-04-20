@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>넥슨 라이브 | [FC온라인] Happy New 26TOTY!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============================================================
+     NXbasic 1.0 — Design Tokens
+     ============================================================ */
+  :root {
+    /* Point Color */
+    --pc-100: #ECF1F9; --pc-200: #CCE2FF; --pc-300: #B8D7FF;
+    --pc-400: #8FBFFF; --pc-500: #6BABFF; --pc-600: #57A0FF;
+    --pc-700: #3D91FF; --pc-800: #0A74FF; --pc-900: #0056C7;
+    --pc-1000: #1E4B85;
+
+    /* Basic Color */
+    --bc-100: #E8EBF2; --bc-200: #D2D6E0; --bc-300: #C6CCD7;
+    --bc-400: #B1B7C4; --bc-500: #A1A7B5; --bc-600: #8F96A3;
+    --bc-700: #747A86; --bc-800: #51555D; --bc-900: #3D4148;
+    --bc-1000: #17191C;
+
+    /* Surface */
+    --lb-100: #FCFCFD; --lb-200: #F9FAFB; --lb-300: #EEF1F6;
+    --db-100: #393C41; --db-200: #26282C;
+
+    /* Theme */
+    --r-100: #FEE1E1; --r-200: #EF5D5D; --r-300: #D84141;
+    --b-100: #E5F8FF; --b-200: #2EC7FF; --b-300: #00ABF5;
+    --y-100: #FFF2D1; --y-200: #FFBB00; --y-300: #DD7F13;
+    --g-100: #E0FAE9; --g-200: #59E387; --g-300: #26A138;
+
+    --color-white: #FFFFFF;
+
+    --font-family-base: 'Noto Sans KR', sans-serif;
+    --font-weight-light: 300; --font-weight-regular: 400;
+    --font-weight-medium: 500; --font-weight-bold: 700;
+
+    --radius-3: 3px; --radius-4: 4px; --radius-5: 5px;
+    --shadow-dropdown: 0 2px 5px rgba(0,0,0,0.12);
+    --shadow-gnb: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  /* ============================================================
+     Reset
+     ============================================================ */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: var(--font-family-base);
+    color: var(--bc-1000);
+    background: var(--lb-200);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
+  button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  img, svg { display: block; }
+  :focus-visible { outline: 2px solid var(--pc-800); outline-offset: 2px; border-radius: 2px; }
+
+  /* ============================================================
+     Typography helpers (NXbasic scale)
+     ============================================================ */
+  .t-32-bold    { font-size: 32px; font-weight: 700; line-height: 48px; letter-spacing: -0.45px; }
+  .t-28-bold    { font-size: 28px; font-weight: 700; line-height: 42px; letter-spacing: -0.43px; }
+  .t-20-bold    { font-size: 20px; font-weight: 700; line-height: 30px; letter-spacing: -0.43px; }
+  .t-18-bold    { font-size: 18px; font-weight: 700; line-height: 28px; letter-spacing: -0.4px; }
+  .t-16-bold    { font-size: 16px; font-weight: 700; line-height: 24px; letter-spacing: -0.35px; }
+  .t-16-regular { font-size: 16px; font-weight: 400; line-height: 24px; letter-spacing: -0.35px; }
+  .t-14-bold    { font-size: 14px; font-weight: 700; line-height: 22px; letter-spacing: -0.3px; }
+  .t-14-regular { font-size: 14px; font-weight: 400; line-height: 22px; letter-spacing: -0.3px; }
+  .t-12-bold    { font-size: 12px; font-weight: 700; line-height: 18px; letter-spacing: -0.26px; }
+  .t-12-regular { font-size: 12px; font-weight: 400; line-height: 18px; letter-spacing: -0.26px; }
+
+  /* ============================================================
+     Layout
+     ============================================================ */
+  .wrap { max-width: 1440px; margin: 0 auto; }
+
+  /* ============================================================
+     GNB
+     ============================================================ */
+  .gnb {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--color-white);
+    box-shadow: var(--shadow-gnb);
+  }
+  .gnb__inner {
+    display: flex; align-items: center;
+    height: 64px; padding: 0 40px;
+  }
+  .gnb__logo {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--pc-800);
+    font-size: 20px; font-weight: var(--font-weight-bold);
+    letter-spacing: -0.5px;
+  }
+  .gnb__logo::before {
+    content: ''; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--r-200);
+    box-shadow: 0 0 0 3px rgba(239,93,93,0.2);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  .gnb__menu { display: flex; gap: 36px; margin-left: 60px; }
+  .gnb__menu-item {
+    position: relative;
+    display: inline-flex; align-items: center;
+    height: 64px; padding: 0 2px;
+    font-size: 16px; color: var(--bc-1000);
+    transition: color 0.15s;
+  }
+  .gnb__menu-item:hover { color: var(--pc-800); }
+  .gnb__menu-item--active { color: var(--pc-800); font-weight: var(--font-weight-bold); }
+  .gnb__menu-item--active::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 2px; background: var(--pc-800);
+  }
+
+  .gnb__right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .icon-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: inline-grid; place-items: center;
+    color: var(--bc-800);
+    transition: background 0.15s, color 0.15s;
+  }
+  .icon-btn:hover { background: var(--lb-300); color: var(--pc-800); }
+  .icon-btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+  /* ============================================================
+     Hero / Live Player
+     ============================================================ */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    background: var(--db-200);
+  }
+
+  .player {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #111521 0%, #0A4B85 100%);
+    overflow: hidden;
+  }
+  .player__status {
+    position: absolute; top: 24px; left: 24px;
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 28px; padding: 0 10px;
+    background: rgba(0,0,0,0.6);
+    color: var(--color-white);
+    font-size: 12px; font-weight: var(--font-weight-bold);
+    letter-spacing: -0.26px;
+    border-radius: var(--radius-4);
+    backdrop-filter: blur(4px);
+  }
+  .player__status::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--bc-400);
+  }
+
+  .player__play {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.6);
+    display: grid; place-items: center;
+    color: var(--color-white);
+    transition: all 0.2s;
+  }
+  .player__play:hover {
+    background: rgba(255,255,255,0.22);
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  .player__play svg { width: 32px; height: 32px; fill: currentColor; margin-left: 4px; }
+
+  .player__overlay {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 32px 40px 32px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+    color: var(--color-white);
+  }
+  .player__overlay .title {
+    font-size: 28px; font-weight: var(--font-weight-bold);
+    letter-spacing: -0.43px;
+    margin-bottom: 8px;
+  }
+  .player__overlay .meta {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--bc-200);
+    font-size: 14px; letter-spacing: -0.3px;
+  }
+  .player__overlay .meta .dot {
+    width: 3px; height: 3px; border-radius: 50%; background: var(--bc-400);
+  }
+
+  /* ============================================================
+     Chat
+     ============================================================ */
+  .chat {
+    display: flex; flex-direction: column;
+    background: var(--color-white);
+    border-left: 1px solid var(--bc-100);
+  }
+  .chat__head {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; padding: 0 20px;
+    border-bottom: 1px solid var(--bc-100);
+  }
+  .chat__head .title { font-size: 16px; font-weight: var(--font-weight-bold); letter-spacing: -0.35px; }
+  .chat__head .viewer {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: var(--bc-700); font-size: 12px;
+  }
+  .chat__body {
+    flex: 1;
+    padding: 16px 20px;
+    display: flex; flex-direction: column; gap: 14px;
+    overflow-y: auto;
+  }
+  .chat-msg {
+    display: flex; gap: 8px;
+  }
+  .chat-msg__avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--lb-300);
+    flex-shrink: 0;
+    background-size: cover; background-position: center;
+  }
+  .chat-msg__body { flex: 1; min-width: 0; }
+  .chat-msg__name {
+    font-size: 12px; font-weight: var(--font-weight-bold); letter-spacing: -0.26px;
+    color: var(--bc-900);
+    margin-bottom: 2px;
+  }
+  .chat-msg__name--primary { color: var(--pc-800); }
+  .chat-msg__name--notice  { color: var(--r-200); }
+  .chat-msg__text {
+    font-size: 14px; line-height: 22px; letter-spacing: -0.3px;
+    color: var(--bc-1000);
+    word-break: break-all;
+  }
+
+  .chat__input {
+    display: flex; gap: 8px;
+    padding: 12px 20px;
+    border-top: 1px solid var(--bc-100);
+  }
+  .chat__input-field {
+    flex: 1;
+    height: 40px; padding: 0 12px;
+    background: var(--lb-300);
+    border: 1px solid transparent;
+    border-radius: var(--radius-4);
+    font-size: 14px; color: var(--bc-500);
+    letter-spacing: -0.3px;
+  }
+  .chat__input-field:disabled { cursor: not-allowed; }
+  .chat__send {
+    height: 40px; padding: 0 14px;
+    background: var(--bc-200); color: var(--bc-500);
+    border-radius: var(--radius-4);
+    font-size: 14px; font-weight: var(--font-weight-bold);
+    letter-spacing: -0.3px;
+    cursor: not-allowed;
+  }
+
+  /* ============================================================
+     Info section
+     ============================================================ */
+  .info {
+    background: var(--lb-100);
+    border-top: 1px solid var(--bc-100);
+    padding: 40px 0 80px;
+  }
+  .info__inner {
+    max-width: 1360px; padding: 0 40px;
+    margin: 0 auto;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+
+  .badges { display: flex; gap: 8px; align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center;
+    height: 24px; padding: 0 8px;
+    border-radius: var(--radius-3);
+    font-size: 12px; font-weight: var(--font-weight-bold);
+    letter-spacing: -0.26px;
+  }
+  .badge--brand { background: var(--pc-100); color: var(--pc-800); }
+  .badge--muted { background: var(--bc-100); color: var(--bc-700); }
+
+  .info__title {
+    font-size: 32px; font-weight: var(--font-weight-bold);
+    line-height: 48px; letter-spacing: -0.45px;
+    color: var(--bc-1000);
+  }
+  .info__meta {
+    display: flex; align-items: center; gap: 16px;
+    color: var(--bc-700);
+    font-size: 14px; letter-spacing: -0.3px;
+  }
+  .info__meta .dot {
+    width: 3px; height: 3px; border-radius: 50%;
+    background: var(--bc-300);
+  }
+
+  /* ============================================================
+     Buttons (NXbasic Button component)
+     ============================================================ */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-bold);
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .btn--medium {
+    height: 48px; padding: 0 16px;
+    border-radius: var(--radius-4);
+    font-size: 16px; letter-spacing: -0.35px;
+  }
+  .btn--filled-primary {
+    background: var(--pc-800); color: var(--color-white);
+  }
+  .btn--filled-primary:hover  { background: var(--pc-700); }
+  .btn--filled-primary:active { background: var(--pc-900); }
+  .btn--outlined {
+    background: var(--color-white);
+    color: var(--bc-1000);
+    border: 1px solid var(--bc-300);
+  }
+  .btn--outlined:hover  { background: var(--bc-100); }
+  .btn--outlined:active { background: var(--bc-200); }
+  .btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+  .info__actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .info__divider {
+    height: 1px; background: var(--bc-100); margin: 0;
+  }
+
+  /* ============================================================
+     Tabs
+     ============================================================ */
+  .tabs {
+    display: flex; gap: 0;
+    border-bottom: 1px solid var(--bc-100);
+  }
+  .tabs__item {
+    position: relative;
+    min-width: 120px; height: 48px;
+    padding: 0 20px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: var(--font-weight-regular);
+    letter-spacing: -0.35px;
+    color: var(--bc-700);
+    transition: color 0.15s;
+  }
+  .tabs__item:hover { color: var(--bc-1000); }
+  .tabs__item--active {
+    color: var(--pc-800); font-weight: var(--font-weight-bold);
+  }
+  .tabs__item--active::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -1px;
+    height: 2px; background: var(--pc-800);
+  }
+
+  /* ============================================================
+     Guide accordion
+     ============================================================ */
+  .guides { display: flex; flex-direction: column; gap: 12px; }
+  .guide {
+    background: var(--color-white);
+    border: 1px solid var(--bc-100);
+    border-radius: var(--radius-5);
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .guide:hover { border-color: var(--bc-200); }
+  .guide__summary {
+    list-style: none;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+    cursor: pointer;
+  }
+  .guide__summary::-webkit-details-marker { display: none; }
+  .guide__summary .title {
+    font-size: 18px; font-weight: var(--font-weight-bold);
+    line-height: 28px; letter-spacing: -0.4px;
+    color: var(--bc-1000);
+  }
+  .guide__summary .chev {
+    width: 20px; height: 20px; fill: var(--bc-700);
+    transition: transform 0.2s;
+  }
+  .guide[open] .guide__summary .chev { transform: rotate(180deg); }
+  .guide__body {
+    padding: 0 24px 24px;
+    font-size: 14px; line-height: 24px; letter-spacing: -0.3px;
+    color: var(--bc-700);
+    white-space: pre-line;
+    border-top: 1px solid var(--bc-100);
+    padding-top: 16px;
+  }
+  .guide__body p + p { margin-top: 12px; }
+
+  /* ============================================================
+     Footer
+     ============================================================ */
+  .footer {
+    background: var(--lb-300);
+    padding: 32px 40px;
+    text-align: center;
+  }
+  .footer__copy {
+    font-size: 12px; color: var(--bc-700);
+    letter-spacing: -0.26px;
+    margin-bottom: 6px;
+  }
+  .footer__links {
+    font-size: 12px; color: var(--bc-500);
+    letter-spacing: -0.26px;
+  }
+  .footer__links a { margin: 0 6px; }
+  .footer__links a:hover { color: var(--pc-800); }
+
+  /* ============================================================
+     Responsive
+     ============================================================ */
+  @media (max-width: 960px) {
+    .hero { grid-template-columns: 1fr; }
+    .chat { border-left: 0; border-top: 1px solid var(--bc-100); height: 480px; }
+    .gnb__menu { display: none; }
+    .player__overlay { padding: 20px 20px 16px; }
+    .player__overlay .title { font-size: 20px; line-height: 30px; }
+    .info { padding: 24px 0 48px; }
+    .info__inner { padding: 0 20px; gap: 16px; }
+    .info__title { font-size: 24px; line-height: 36px; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ========== GNB ========== -->
+<header class="gnb">
+  <div class="gnb__inner wrap">
+    <a href="/" class="gnb__logo" aria-label="넥슨 라이브">넥슨 라이브</a>
+
+    <nav class="gnb__menu" aria-label="Primary">
+      <a href="#" class="gnb__menu-item gnb__menu-item--active">라이브</a>
+      <a href="#" class="gnb__menu-item">예정된 라이브</a>
+      <a href="#" class="gnb__menu-item">지난 라이브</a>
+    </nav>
+
+    <div class="gnb__right">
+      <button class="icon-btn" aria-label="검색">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 13 15.5l.27.28v.79L18.25 21.5 19.5 20.25 15.5 14zm-5.5 0A4.5 4.5 0 1 1 14.5 9.5 4.49 4.49 0 0 1 10 14z"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="테마">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18V4a8 8 0 0 1 0 16z"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="프로필">
+        <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ========== Hero ========== -->
+<section class="hero wrap">
+
+  <div class="player">
+    <span class="player__status" aria-label="방송 종료">방송 종료</span>
+
+    <button class="player__play" aria-label="다시보기 재생">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+
+    <div class="player__overlay">
+      <h1 class="title">[FC온라인] Happy New 26TOTY!</h1>
+      <div class="meta">
+        <span>2026.01.16 (금) 오전 10:00</span>
+        <span class="dot"></span>
+        <span>가로형 스트리밍</span>
+      </div>
+    </div>
+  </div>
+
+  <aside class="chat" aria-label="실시간 채팅">
+    <div class="chat__head">
+      <span class="title">실시간 채팅</span>
+      <span class="viewer">누적 시청 48,217</span>
+    </div>
+
+    <div class="chat__body">
+      <div class="chat-msg">
+        <div class="chat-msg__avatar"></div>
+        <div class="chat-msg__body">
+          <div class="chat-msg__name chat-msg__name--primary">감독_TOTY팬</div>
+          <div class="chat-msg__text">TOTY 너무 기대돼요!</div>
+        </div>
+      </div>
+      <div class="chat-msg">
+        <div class="chat-msg__avatar"></div>
+        <div class="chat-msg__body">
+          <div class="chat-msg__name">축덕</div>
+          <div class="chat-msg__text">아이콘 매치 사인 유니폼 당첨 기원 🙏</div>
+        </div>
+      </div>
+      <div class="chat-msg">
+        <div class="chat-msg__avatar"></div>
+        <div class="chat-msg__body">
+          <div class="chat-msg__name">FC매니저</div>
+          <div class="chat-msg__text">이번 시즌 최고의 이벤트</div>
+        </div>
+      </div>
+      <div class="chat-msg">
+        <div class="chat-msg__avatar"></div>
+        <div class="chat-msg__body">
+          <div class="chat-msg__name">구단주92</div>
+          <div class="chat-msg__text">캐시팩 고민 중..</div>
+        </div>
+      </div>
+      <div class="chat-msg">
+        <div class="chat-msg__avatar"></div>
+        <div class="chat-msg__body">
+          <div class="chat-msg__name">프리스타일러</div>
+          <div class="chat-msg__text">방금 구매했어요!</div>
+        </div>
+      </div>
+      <div class="chat-msg">
+        <div class="chat-msg__avatar"></div>
+        <div class="chat-msg__body">
+          <div class="chat-msg__name chat-msg__name--notice">운영자</div>
+          <div class="chat-msg__text">본 라이브는 종료되었습니다. 다시보기로 즐겨주세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <form class="chat__input" onsubmit="return false;">
+      <input type="text" class="chat__input-field"
+             placeholder="채팅 입력이 종료되었습니다" disabled />
+      <button class="chat__send" disabled>전송</button>
+    </form>
+  </aside>
+
+</section>
+
+<!-- ========== Info ========== -->
+<section class="info">
+  <div class="info__inner">
+
+    <div>
+      <div class="badges">
+        <span class="badge badge--brand">FC온라인</span>
+        <span class="badge badge--muted">방송 종료</span>
+      </div>
+
+      <h2 class="info__title" style="margin-top:12px;">[FC온라인] Happy New 26TOTY!</h2>
+
+      <div class="info__meta" style="margin-top:12px;">
+        <span>방송일&nbsp;&nbsp;2026.01.16 (금) 오전 10:00</span>
+        <span class="dot"></span>
+        <span>실시간 스트리밍</span>
+        <span class="dot"></span>
+        <span>IVS</span>
+      </div>
+    </div>
+
+    <div class="info__actions">
+      <button class="btn btn--medium btn--filled-primary">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        다시보기
+      </button>
+      <button class="btn btn--medium btn--outlined">
+        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A5.97 5.97 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z"/></svg>
+        좋아요  1,284
+      </button>
+      <button class="btn btn--medium btn--outlined">
+        <svg viewBox="0 0 24 24"><path d="M18 16.08a2.94 2.94 0 0 0-1.98.77L8.91 12.7a3.3 3.3 0 0 0 0-1.4l7.05-4.11a3 3 0 1 0-.97-2.19 3.3 3.3 0 0 0 .09.73L8.04 9.81A3 3 0 1 0 8.04 14.19l7.12 4.15a2.82 2.82 0 0 0-.08.66 2.92 2.92 0 1 0 2.92-2.92z"/></svg>
+        공유
+      </button>
+    </div>
+
+    <div class="info__divider"></div>
+
+    <!-- Tabs -->
+    <nav class="tabs" aria-label="라이브 정보">
+      <a href="#" class="tabs__item tabs__item--active">라이브 안내</a>
+      <a href="#" class="tabs__item">상품</a>
+      <a href="#" class="tabs__item">이벤트</a>
+    </nav>
+
+    <!-- Guides -->
+    <div class="guides">
+
+      <details class="guide" open>
+        <summary class="guide__summary">
+          <span class="title">마케팅 활용 안내</span>
+          <svg class="chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </summary>
+        <div class="guide__body">
+          <p>※ 본 라이브에서는 화면에 송출되는 넥슨 닉네임, 구단주명, 채팅을 녹화할 수 있으며, 이는 넥슨코리아가 제공하는 서비스 및 관련 프로모션에 마케팅, 홍보 목적으로 활용될 수 있습니다.</p>
+          <p>※ 이벤트 당첨자 안내
+라이브 방송에서 진행된 이벤트 당첨에 대한 안내는 1월 29일(목)에 진행될 예정입니다. 당첨자 발표 이전에 구매 취소 및 청약 철회를 하실 경우 당첨이 취소됩니다.
+아이콘 매치 사인 유니폼에 당첨되신 분들에게는 배송을 위한 개인 정보 수집 안내가 진행될 예정이며, 개인 정보 입력 기간 내 입력을 하지 않을 시 당첨이 취소될 수 있으며, 이후 배송은 어렵습니다. 개인 정보 입력을 오기입하여 발생하는 오배송에 대해서는 책임지지 않습니다.</p>
+        </div>
+      </details>
+
+      <details class="guide">
+        <summary class="guide__summary">
+          <span class="title">상품 구매 주의사항</span>
+          <svg class="chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </summary>
+        <div class="guide__body">
+          <p>※ 라이브 상품은 방송 시작 후 1시간 후까지 구매하실 수 있으며, 라이브 상품 링크를 통해 구매 가능합니다.
+※ 라이브 시간 내 구매 가능한 상품은 계정당 구매 제한이 있는 상품으로, 구매 제한 횟수를 초과하여 구매는 어렵습니다.
+※ 청약 철회는 기존 상품과 동일하게 적용되며, 구매일로부터 7일이 경과하거나 보관함 수령 및 사용한 경우 청약 철회가 불가합니다.
+※ 청약 철회를 원하실 경우, 인게임 아이템 수령 창구에서 청약 철회 진행하실 수 있습니다.
+※ 환불 승인된 아이템을 사용한 경우, 정책에 따라 게임 이용 제한이 될 수 있습니다.
+※ 구매 즉시 효과가 적용되거나, 일부 사용되어 콘텐츠 반환이 불가능한 경우 청약 철회가 제한될 수 있습니다.
+※ 라이브방송에서 판매하는 상품은 점검 직후 상점에 업데이트되는 상품명과 동일한 상품명으로 구성되어 있습니다.</p>
+          <p>※ 미성년자가 법정 대리인의 동의 없이 결제한 경우, 본인 또는 법정대리인은 결제를 취소할 수 있습니다.
+※ 단, 미성년자의 유료 서비스 결제가 법정대리인으로부터 처분을 허락받은 재산의 범위 내인 경우 또는 미성년자의 사술로 인해 발생한 경우에는 취소가 제한됩니다.</p>
+          <p>※ 확률 정보 : Happy New 26 TOTY에서 판매되는 상품의 확률 정보는 추후 라이브 쇼핑 이후 확인하실 수 있습니다.</p>
+        </div>
+      </details>
+
+      <details class="guide">
+        <summary class="guide__summary">
+          <span class="title">유의사항</span>
+          <svg class="chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </summary>
+        <div class="guide__body">
+          <p>※ 이벤트 내용 및 경품, 구매 특전은 라이브 방송 상황에 따라 부득이하게 변경될 수 있습니다.
+※ Happy New 26TOTY에서 판매되는 상품은 FC/MC가 아닌 넥슨캐시 결제로 구매 가능합니다.</p>
+        </div>
+      </details>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== Footer ========== -->
+<footer class="footer">
+  <div class="footer__copy">© NEXON Korea Corporation. All Rights Reserved.</div>
+  <nav class="footer__links" aria-label="Footer">
+    <a href="#">이용약관</a> ·
+    <a href="#">개인정보처리방침</a> ·
+    <a href="#">청소년보호정책</a> ·
+    <a href="#">고객센터</a>
+  </nav>
+</footer>
+
+</body>
+</html>
