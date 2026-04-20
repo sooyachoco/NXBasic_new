@@ -1,5 +1,8 @@
-# GitHub Pages: 브라우저에서 live-tv_claude.html 등 정적 파일 제공
-# 저장소 Settings → Pages → Build and deployment → Source: GitHub Actions 로 설정 필요
+# GitHub Pages — 브라우저에서 live-tv_claude.html 제공
+#
+# 반드시 한 번 설정: 저장소 Settings → Pages → Build and deployment
+# → Source 를 "GitHub Actions" 로 선택한 뒤, Actions 탭에서 워크플로를 성공시키세요.
+# (Source가 "Deploy from a branch" 이거나 비어 있으면 *.github.io 에서 404가 납니다.)
 
 name: Deploy GitHub Pages
 
@@ -26,10 +29,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/configure-pages@v5
+
       - name: Assemble static site
         run: |
           mkdir -p _site
           cp -r design-system 202605_NXlive _site/
+          cat > _site/index.html <<'HTML'
+          <!DOCTYPE html>
+          <html lang="ko">
+          <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta http-equiv="refresh" content="0; url=202605_NXlive/live-tv_claude.html" />
+            <title>NXBasic — Live TV</title>
+          </head>
+          <body>
+            <p><a href="202605_NXlive/live-tv_claude.html">Live TV 페이지로 이동</a></p>
+          </body>
+          </html>
+          HTML
 
       - uses: actions/upload-pages-artifact@v3
         with:
