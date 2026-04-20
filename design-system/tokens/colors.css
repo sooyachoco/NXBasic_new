@@ -1,0 +1,126 @@
+/* ============================================================
+   Nexon Basic 1.0 Design System — Color Tokens
+   Source: Figma / Nexon-Basic-1.0v
+   ============================================================ */
+
+:root {
+
+  /* ----------------------------------------------------------
+     Point Color (Primary Blue) — PC800이 브랜드 메인컬러 ★
+  ---------------------------------------------------------- */
+  --pc-100: #ECF1F9;
+  --pc-200: #CCE2FF;
+  --pc-300: #B8D7FF;
+  --pc-400: #8FBFFF;
+  --pc-500: #6BABFF;
+  --pc-600: #57A0FF;
+  --pc-700: #3D91FF;
+  --pc-800: #0A74FF;   /* ★ Primary Brand Color */
+  --pc-900: #0056C7;
+  --pc-1000: #1E4B85;
+
+  /* ----------------------------------------------------------
+     Basic Color (Neutral) — BC1000이 기본 텍스트 ★
+  ---------------------------------------------------------- */
+  --bc-100: #E8EBF2;   /* 밝은 라인 */
+  --bc-200: #D2D6E0;   /* 일반 라인, 딤드 텍스트 */
+  --bc-300: #C6CCD7;   /* 인풋창 라인, 진한 라인 */
+  --bc-400: #B1B7C4;
+  --bc-500: #A1A7B5;   /* Secondary 버튼, 보조텍스트, 서브텍스트 */
+  --bc-600: #8F96A3;
+  --bc-700: #747A86;   /* 진한 보조 텍스트, 다크테마 아이콘 */
+  --bc-800: #51555D;
+  --bc-900: #3D4148;   /* 다크테마 Secondary 버튼 */
+  --bc-1000: #17191C;  /* ★ 본문 텍스트 */
+
+  /* ----------------------------------------------------------
+     White & Black
+  ---------------------------------------------------------- */
+  --color-white: #FFFFFF;  /* On surface 구분 배경 */
+  --color-black: #000000;  /* 딤드 오버레이 레이어 */
+
+  /* ----------------------------------------------------------
+     On Surface (Background Layers)
+  ---------------------------------------------------------- */
+  --lb-100: #FCFCFD;   /* 전체 화면 BG */
+  --lb-200: #F9FAFB;   /* LB100 위에 올라가는 BG */
+  --lb-300: #EEF1F6;   /* Footer BG */
+  --pb-150: #A0A9BA;
+  --db-100: #393C41;   /* Dark Footer */
+  --db-200: #26282C;   /* Dark LNB */
+
+  /* ----------------------------------------------------------
+     Theme Color — Error / Confirm / Warning / Approve
+  ---------------------------------------------------------- */
+
+  /* Error (에러) */
+  --r-100: #FEE1E1;
+  --r-200: #EF5D5D;
+  --r-300: #D84141;
+
+  /* Confirm (확인) */
+  --b-100: #E5F8FF;
+  --b-200: #2EC7FF;
+  --b-300: #00ABF5;
+
+  /* Warning (주의/경고) */
+  --y-100: #FFF2D1;
+  --y-200: #FFBB00;
+  --y-300: #DD7F13;
+
+  /* Approve (승인) */
+  --g-100: #E0FAE9;
+  --g-200: #59E387;
+  --g-300: #26A138;
+
+  /* ----------------------------------------------------------
+     Legend & Tag Colors
+  ---------------------------------------------------------- */
+
+  /* Purple — 범례 & 태그, 링크 visited */
+  --pp-100: #F7F0FF;
+  --pp-200: #9747FF;
+  --pp-300: #6C10E5;
+
+  /* Blue — 범례 & 태그 */
+  --pb-100: #EBEFFF;
+  --pb-200: #4D76FF;
+  --pb-300: #214BD4;
+
+  /* Pink — 범례 & 태그 */
+  --p-100:  #FCD9EE;
+  --p-200:  #EF4EAE;
+  --p-300:  #C20F7B;
+
+  /* ----------------------------------------------------------
+     Semantic Aliases (사용 권장)
+  ---------------------------------------------------------- */
+  --color-primary:          var(--pc-800);
+  --color-primary-hover:    var(--pc-700);
+  --color-primary-active:   var(--pc-900);
+  --color-primary-disabled: var(--pc-300);
+
+  --color-text-primary:     var(--bc-1000);
+  --color-text-secondary:   var(--bc-500);
+  --color-text-tertiary:    var(--bc-300);
+  --color-text-disabled:    var(--bc-300);
+  --color-text-inverse:     var(--color-white);
+
+  --color-bg-base:          var(--lb-100);
+  --color-bg-elevated:      var(--lb-200);
+  --color-bg-footer:        var(--lb-300);
+
+  --color-border-light:     var(--bc-100);
+  --color-border-default:   var(--bc-200);
+  --color-border-strong:    var(--bc-300);
+  --color-border-input:     var(--bc-300);
+
+  --color-error:            var(--r-200);
+  --color-error-bg:         var(--r-100);
+  --color-warning:          var(--y-200);
+  --color-warning-bg:       var(--y-100);
+  --color-success:          var(--g-300);
+  --color-success-bg:       var(--g-100);
+  --color-info:             var(--b-300);
+  --color-info-bg:          var(--b-100);
+}
