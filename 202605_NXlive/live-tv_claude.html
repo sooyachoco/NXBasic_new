@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Live TV — 메인</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+<!-- ✅ Nexon Basic 1.0 Design System -->
+<link rel="stylesheet" href="../design-system/tokens/colors.css" />
+<link rel="stylesheet" href="../design-system/tokens/typography.css" />
+
+<style>
+  /* ===== Page-specific variables (디자인시스템에 없는 값만) ===== */
+  :root {
+    /* Ranking tiers */
+    --gold:   #F5B800;
+    --silver: #BFC4CC;
+    --bronze: #C9804A;
+
+    /* Channel brand colors */
+    --ch-kbs:  #0054A6;
+    --ch-mbc:  #E60012;
+    --ch-sbs:  #1A237E;
+    --ch-jtbc: #C8102E;
+    --ch-tvn:  #E8308A;
+    --ch-kbs2: #F7B500;
+    --ch-ocn:  #1B3A6B;
+  }
+
+  /* ===== Reset ===== */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { font-family: var(--font-family-base); color: var(--bc-1000); background: var(--lb-100); -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  img, svg { display: block; }
+  :focus-visible { outline: 2px solid var(--pc-800); outline-offset: 2px; border-radius: 2px; }
+
+  /* ===== Icon system ===== */
+  .icon { width: 20px; height: 20px; flex-shrink: 0; fill: currentColor; }
+  .icon--sm { width: 16px; height: 16px; }
+  .icon--lg { width: 24px; height: 24px; }
+
+  /* ===== Layout ===== */
+  .wrap { max-width: 1440px; margin: 0 auto; }
+
+  /* ===== GNB ===== */
+  .gnb { position: sticky; top: 0; z-index: 100; background: var(--color-white); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .gnb__inner { display: flex; align-items: center; height: 64px; padding: 0 40px; }
+  .gnb__logo {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 20px; font-weight: var(--font-weight-bold); color: var(--pc-800);
+    letter-spacing: -0.5px;
+  }
+  .gnb__logo::before {
+    content: ''; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--r-200);
+    box-shadow: 0 0 0 3px rgba(239,93,93,0.2);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .gnb__menu { display: flex; gap: 36px; margin-left: 60px; }
+  .gnb__menu-item {
+    position: relative; display: inline-flex; align-items: center;
+    height: 64px; padding: 0 2px;
+    font-size: 16px; color: var(--bc-1000);
+    transition: color 0.15s;
+  }
+  .gnb__menu-item:hover { color: var(--pc-800); }
+  .gnb__menu-item--active { color: var(--pc-800); font-weight: var(--font-weight-bold); }
+  .gnb__menu-item--active::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 2px; background: var(--pc-800);
+  }
+  .gnb__right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .icon-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: inline-grid; place-items: center;
+    color: var(--bc-800);
+    transition: background 0.15s, color 0.15s;
+  }
+  .icon-btn:hover { background: var(--lb-300); color: var(--pc-800); }
+
+  /* Search (expandable) */
+  .search { position: relative; display: flex; align-items: center; width: 40px; height: 40px; }
+  .search__toggle { position: relative; z-index: 2; transition: opacity 0.18s ease, transform 0.18s ease; }
+  .search[data-open="true"] .search__toggle { opacity: 0; transform: scale(0.6) rotate(-20deg); pointer-events: none; }
+  .search__field {
+    position: absolute; right: 0; top: 50%;
+    display: flex; align-items: center; gap: 8px;
+    height: 40px; width: 40px; padding: 0;
+    background: var(--color-white);
+    border: 1px solid transparent; border-radius: 20px;
+    box-shadow: 0 0 0 rgba(10,116,255,0);
+    overflow: hidden; pointer-events: none;
+    transform: translateY(-50%);
+    transition: width 0.32s cubic-bezier(0.6,0,0.2,1) 0.08s, padding 0.32s cubic-bezier(0.6,0,0.2,1) 0.08s, border-color 0.2s ease, box-shadow 0.25s ease;
+  }
+  .search[data-open="true"] .search__field {
+    width: 320px; padding: 0 6px 0 14px;
+    border-color: var(--pc-800);
+    box-shadow: 0 6px 20px rgba(10,116,255,0.18);
+    pointer-events: auto;
+    transition: width 0.36s cubic-bezier(0.22,1,0.36,1), padding 0.36s cubic-bezier(0.22,1,0.36,1), border-color 0.2s ease, box-shadow 0.3s ease;
+  }
+  .search__field-icon { color: var(--pc-800); flex-shrink: 0; }
+  .search__input {
+    flex: 1; min-width: 0; border: none; outline: none; background: transparent;
+    font-family: var(--font-family-base); font-size: 14px; color: var(--bc-1000); letter-spacing: -0.3px;
+  }
+  .search__input::placeholder { color: var(--bc-500); }
+  .search__close {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    display: inline-grid; place-items: center;
+    color: var(--bc-700); transition: background 0.15s, color 0.15s;
+  }
+  .search__close:hover { background: var(--lb-300); color: var(--bc-1000); }
+  .search__field-icon, .search__input, .search__close { opacity: 0; transform: translateX(4px); transition: opacity 0.14s ease, transform 0.14s ease; }
+  .search[data-open="true"] .search__field-icon { opacity: 1; transform: translateX(0); transition: opacity 0.22s ease 0.14s, transform 0.22s ease 0.14s; }
+  .search[data-open="true"] .search__input { opacity: 1; transform: translateX(0); transition: opacity 0.22s ease 0.18s, transform 0.22s ease 0.18s; }
+  .search[data-open="true"] .search__close { opacity: 1; transform: translateX(0); transition: opacity 0.22s ease 0.22s, transform 0.22s ease 0.22s; }
+  @media (prefers-reduced-motion: reduce) {
+    .search__toggle, .search__field, .search__field-icon, .search__input, .search__close { transition: opacity 0.1s linear !important; transform: none !important; }
+  }
+
+  /* ===== Buttons ===== */
+  /* GNB 로그인 — 디자인시스템 Filled primary_1 Small 기준 */
+  .btn-primary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    height: 40px; padding: 0 16px; border-radius: 4px;
+    background: var(--pc-800); color: var(--color-white);
+    font-family: var(--font-family-base); font-size: 14px; font-weight: var(--font-weight-medium);
+    transition: background 0.15s;
+  }
+  .btn-primary:hover  { background: var(--pc-700); }
+  .btn-primary:active { background: var(--pc-900); }
+
+  /* Hero watch — 디자인시스템 Filled primary_1 Large */
+  .hero__btn-watch {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 56px; padding: 0 28px; border-radius: 4px;
+    background: var(--pc-800); color: var(--color-white);
+    font-family: var(--font-family-base); font-size: 18px; font-weight: var(--font-weight-medium);
+    box-shadow: 0 8px 24px rgba(10,116,255,0.4);
+    transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  }
+  .hero__btn-watch:hover { background: var(--pc-700); transform: translateY(-1px); box-shadow: 0 12px 28px rgba(10,116,255,0.5); }
+
+  /* Hero ghost — 디자인시스템 Ghost 계열 */
+  .hero__btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 56px; padding: 0 20px; border-radius: 4px;
+    background: rgba(255,255,255,0.1); color: var(--color-white);
+    font-family: var(--font-family-base); font-size: 16px; font-weight: var(--font-weight-medium);
+    backdrop-filter: blur(8px);
+    transition: background 0.15s;
+  }
+  .hero__btn-ghost:hover { background: rgba(255,255,255,0.18); }
+
+  /* Alarm — 디자인시스템 Outlined secondary_1 XXsmall */
+  .pop-card__alarm {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 7px 10px; border-radius: 3px;
+    background: transparent; color: var(--bc-800);
+    border: 1px solid var(--bc-200);
+    font-family: var(--font-family-base); font-size: 12px; font-weight: var(--font-weight-medium);
+    align-self: flex-start; margin-top: 8px;
+    transition: all 0.15s;
+  }
+  .pop-card__alarm:hover { border-color: var(--pc-800); color: var(--pc-800); background: var(--pc-100); }
+
+  /* ===== Hero Banner ===== */
+  .hero {
+    display: grid; grid-template-columns: 540px 1fr; gap: 40px;
+    padding: 48px 40px; min-height: 520px;
+    background: radial-gradient(ellipse at 15% 20%, #1256A8 0%, #081634 80%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 90% 110%, rgba(10,116,255,0.3), transparent 40%), radial-gradient(circle at 10% 100%, rgba(151,71,255,0.15), transparent 50%);
+    pointer-events: none;
+  }
+  .hero__left { position: relative; display: flex; flex-direction: column; gap: 16px; color: var(--color-white); z-index: 1; }
+  .hero__meta { display: flex; align-items: center; gap: 10px; }
+  .hero__channel { color: var(--bc-300); font-size: 14px; }
+  .hero__category {
+    display: inline-flex; padding: 3px 8px; border-radius: 3px;
+    background: rgba(255,255,255,0.12); color: var(--color-white);
+    font-size: 11px; font-weight: var(--font-weight-medium);
+  }
+  .hero__title { font-size: 48px; font-weight: var(--font-weight-bold); line-height: 1.2; letter-spacing: -0.5px; }
+  .hero__title em { font-style: normal; color: var(--pc-700); }
+  .hero__desc { color: var(--bc-300); font-weight: var(--font-weight-light); font-size: 16px; line-height: 1.6; max-width: 520px; }
+  .hero__buttons { display: flex; gap: 12px; margin-top: 20px; }
+  .hero__stats { display: flex; align-items: center; gap: 24px; margin-top: 8px; color: var(--bc-300); font-size: 14px; }
+  .hero__stat { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* Player preview */
+  .hero__right {
+    position: relative; z-index: 1;
+    border-radius: 12px; overflow: hidden;
+    background: linear-gradient(135deg, #0D2849 0%, #000 100%);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.08);
+  }
+  .hero__player { position: absolute; inset: 0; display: grid; place-items: center; }
+  .hero__player-bg {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 3px), radial-gradient(circle at 50% 50%, rgba(10,116,255,0.3) 0%, transparent 60%);
+  }
+  .hero__play-btn {
+    position: relative; width: 88px; height: 88px; border-radius: 50%;
+    background: rgba(255,255,255,0.95); color: var(--pc-900);
+    display: grid; place-items: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    transition: transform 0.2s;
+  }
+  .hero__play-btn:hover { transform: scale(1.08); }
+  .hero__play-btn::before {
+    content: ''; position: absolute; inset: -8px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.3);
+    animation: ring 2s ease-out infinite;
+  }
+  @keyframes ring { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
+  .hero__player-top { position: absolute; top: 16px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: center; z-index: 2; }
+  .hero__player-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 24px 20px 16px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); z-index: 2;
+  }
+  .hero__player-title { color: var(--color-white); font-size: 14px; font-weight: var(--font-weight-medium); }
+  .hero__player-sub { color: var(--bc-400); font-size: 12px; margin-top: 2px; }
+  .hero__player-progress { height: 3px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; margin-top: 12px; }
+  .hero__player-progress-fill { height: 100%; background: var(--r-200); width: 52%; }
+
+  /* ===== Badge ===== */
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 3px; font-size: 11px; font-weight: var(--font-weight-bold); line-height: 1; white-space: nowrap; }
+  .badge--live { background: var(--r-200); color: var(--color-white); padding: 5px 8px; }
+  .badge--live .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-white); animation: pulse 1.4s ease-in-out infinite; }
+  .badge--viewer { background: rgba(0,0,0,0.6); color: var(--color-white); font-weight: var(--font-weight-medium); backdrop-filter: blur(4px); }
+  .badge--genre { font-weight: var(--font-weight-medium); font-size: 11px; padding: 4px 8px; }
+  .badge--genre-drama { background: rgba(151,71,255,0.12); color: var(--pp-200); }
+  .badge--genre-ent   { background: rgba(10,116,255,0.12);  color: var(--pc-800); }
+  .badge--genre-music { background: rgba(239,78,174,0.12);  color: var(--p-200); }
+  .badge--rank {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: inline-grid; place-items: center;
+    background: var(--bc-900); color: var(--color-white);
+    font-size: 13px; font-weight: var(--font-weight-bold); letter-spacing: -0.5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  .badge--rank-1 { background: linear-gradient(135deg, #FFD700, var(--gold)); color: #5A3A00; box-shadow: 0 4px 12px rgba(245,184,0,0.4); }
+  .badge--rank-2 { background: linear-gradient(135deg, #E6E9ED, var(--silver)); color: var(--bc-900); }
+  .badge--rank-3 { background: linear-gradient(135deg, #E0A678, var(--bronze)); color: #5A3A00; }
+
+  /* ===== Category Tabs ===== */
+  .tabs {
+    position: sticky; top: 64px; z-index: 50;
+    display: flex; gap: 8px; padding: 0 40px;
+    background: var(--color-white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    position: relative; padding: 18px 16px;
+    font-size: 15px; color: var(--bc-800); white-space: nowrap;
+    transition: color 0.15s, background 0.15s; border-radius: 6px 6px 0 0;
+  }
+  .tab:hover { color: var(--pc-800); background: var(--lb-200); }
+  .tab--active { color: var(--pc-800); font-weight: var(--font-weight-bold); }
+  .tab--active::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: 0; height: 3px; background: var(--pc-800); border-radius: 2px 2px 0 0; }
+
+  /* ===== Content ===== */
+  .content { padding: 40px 40px 56px; display: flex; flex-direction: column; gap: 56px; }
+
+  /* ===== Section Header ===== */
+  .section-header { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 24px; }
+  .section-header__left { display: flex; align-items: baseline; gap: 14px; }
+  /* 디자인시스템 .text-24-bold 적용 */
+  .section-header__title { font-size: 24px; font-weight: var(--font-weight-bold); color: var(--bc-1000); letter-spacing: -0.43px; }
+  .section-header__meta { display: flex; align-items: center; gap: 6px; color: var(--bc-700); font-size: 14px; }
+  .section-header__meta .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--r-200); animation: pulse 1.4s ease-in-out infinite; }
+  .section-header__more { margin-left: auto; display: inline-flex; align-items: center; gap: 2px; padding: 8px 4px; font-size: 14px; color: var(--pc-800); transition: color 0.15s; }
+  .section-header__more:hover { color: var(--pc-900); }
+  .section-header__more .icon--sm { transition: transform 0.2s; }
+  .section-header__more:hover .icon--sm { transform: translateX(2px); }
+
+  /* ===== Live Cards Grid ===== */
+  .live-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .live-card {
+    position: relative; background: var(--color-white); border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;
+  }
+  .live-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.12); }
+  .live-card:hover .live-card__thumb::after { opacity: 1; }
+  .live-card__thumb {
+    position: relative; aspect-ratio: 310/174;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 12px; overflow: hidden;
+  }
+  .live-card__thumb > .badge { position: relative; z-index: 2; }
+  .live-card__thumb::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 3px); }
+  .live-card__thumb::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 60%, rgba(255,255,255,0.15), transparent 50%); opacity: 0; transition: opacity 0.2s; }
+  .live-card__logo { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-size: 28px; font-weight: var(--font-weight-bold); color: rgba(255,255,255,0.95); letter-spacing: -1px; text-shadow: 0 2px 12px rgba(0,0,0,0.4); }
+  .live-card__thumb[data-channel="KBS1"] { background: linear-gradient(135deg, #0054A6 0%, #001F4D 100%); }
+  .live-card__thumb[data-channel="MBC"]  { background: linear-gradient(135deg, #C8102E 0%, #4A0410 100%); }
+  .live-card__thumb[data-channel="SBS"]  { background: linear-gradient(135deg, #1A237E 0%, #06091F 100%); }
+  .live-card__thumb[data-channel="JTBC"] { background: linear-gradient(135deg, #C8102E 0%, #1A0305 100%); }
+  .live-card__body { padding: 16px; }
+  .live-card__meta { display: flex; align-items: center; gap: 6px; }
+  .live-card__channel { color: var(--pc-800); font-size: 12px; font-weight: var(--font-weight-bold); }
+  .live-card__separator { color: var(--bc-300); font-size: 11px; }
+  .live-card__num { color: var(--bc-700); font-size: 12px; }
+  /* 디자인시스템 .text-16-bold 적용 */
+  .live-card__program { font-size: 16px; font-weight: var(--font-weight-bold); color: var(--bc-1000); margin-top: 6px; line-height: 1.4; }
+  .live-card__progress { margin-top: 16px; }
+  .live-card__bar { height: 4px; background: var(--lb-300); border-radius: 2px; overflow: hidden; }
+  .live-card__bar-fill { height: 100%; background: linear-gradient(90deg, var(--pc-800), var(--pc-700)); border-radius: 2px; }
+  /* 디자인시스템 .text-12-regular 적용 */
+  .live-card__time { margin-top: 8px; display: flex; justify-content: space-between; color: var(--bc-500); font-size: 12px; }
+  .live-card__time strong { color: var(--bc-800); font-weight: var(--font-weight-medium); }
+
+  /* ===== Popular Cards Grid ===== */
+  .pop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .pop-card {
+    display: flex; background: var(--color-white); border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06); overflow: hidden; height: 200px;
+    transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;
+  }
+  .pop-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.1); }
+  .pop-card__thumb { position: relative; flex: 0 0 150px; padding: 12px; display: flex; align-items: flex-start; overflow: hidden; }
+  .pop-card__thumb::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 3px); }
+  .pop-card__thumb-logo { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-size: 22px; font-weight: var(--font-weight-bold); color: rgba(255,255,255,0.9); letter-spacing: -0.8px; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .pop-card__thumb[data-ch="tvN"]  { background: linear-gradient(135deg, #E8308A 0%, #3D0A20 100%); }
+  .pop-card__thumb[data-ch="MBC"]  { background: linear-gradient(135deg, #C8102E 0%, #4A0410 100%); }
+  .pop-card__thumb[data-ch="SBS"]  { background: linear-gradient(135deg, #1A237E 0%, #06091F 100%); }
+  .pop-card__thumb[data-ch="KBS2"] { background: linear-gradient(135deg, #F7B500 0%, #3D2B00 100%); }
+  .pop-card__thumb[data-ch="JTBC"] { background: linear-gradient(135deg, #C8102E 0%, #1A0305 100%); }
+  .pop-card__thumb[data-ch="OCN"]  { background: linear-gradient(135deg, #1B3A6B 0%, #06091F 100%); }
+  .pop-card__body { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 4px; min-width: 0; align-items: flex-start; }
+  .pop-card__channel { color: var(--bc-700); font-size: 12px; margin-top: 6px; }
+  /* 디자인시스템 .text-18-bold 적용 */
+  .pop-card__title { font-size: 18px; font-weight: var(--font-weight-bold); color: var(--bc-1000); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pop-card__rating { display: flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 13px; }
+  .pop-card__rating .stars { color: var(--y-200); letter-spacing: -1px; }
+  .pop-card__rating .score { color: var(--bc-1000); font-weight: var(--font-weight-bold); }
+  /* 디자인시스템 .text-12-regular 적용 */
+  .pop-card__next { margin-top: auto; color: var(--bc-500); font-size: 12px; display: flex; align-items: center; gap: 4px; }
+
+  /* ===== Schedule Table ===== */
+  .schedule-table { border-radius: 8px; overflow: hidden; border: 1px solid var(--bc-100); background: var(--color-white); }
+  .schedule-row { display: grid; grid-template-columns: 140px repeat(6, 1fr); align-items: center; gap: 4px; padding: 10px 16px; border-bottom: 1px solid var(--bc-100); }
+  .schedule-row:last-child { border-bottom: none; }
+  .schedule-row--header { background: var(--lb-200); padding: 14px 16px; border-bottom: 1px solid var(--bc-200); }
+  /* 디자인시스템 .text-12-bold 적용 */
+  .schedule-cell--header { font-size: 13px; font-weight: var(--font-weight-bold); color: var(--bc-700); text-align: left; }
+  .schedule-cell--channel { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: var(--font-weight-bold); color: var(--bc-1000); }
+  .schedule-cell--channel .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--r-200); animation: pulse 1.4s ease-in-out infinite; }
+  .schedule-cell--channel .logo-chip { font-size: 10px; font-weight: var(--font-weight-bold); padding: 2px 6px; border-radius: 3px; background: var(--lb-300); color: var(--bc-800); }
+  .prog-cell { padding: 8px 12px; border-radius: 4px; background: var(--lb-200); color: var(--bc-900); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: background 0.15s; }
+  .prog-cell:hover { background: var(--bc-100); cursor: pointer; }
+  .prog-cell--span2 { grid-column: span 2; }
+  .prog-cell--now { background: var(--pc-100); border: 1px solid var(--pc-800); color: var(--pc-800); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .prog-cell--now::before { content: 'NOW'; flex-shrink: 0; background: var(--pc-800); color: var(--color-white); font-size: 9px; font-weight: var(--font-weight-bold); padding: 2px 5px; border-radius: 2px; letter-spacing: 0.5px; line-height: 1; }
+
+  /* ===== Footer ===== */
+  .footer { padding: 32px 40px; background: var(--lb-300); border-top: 1px solid var(--bc-100); }
+  .footer__inner { display: flex; align-items: center; gap: 28px; max-width: 1440px; margin: 0 auto; }
+  .footer__logo { font-size: 16px; font-weight: var(--font-weight-bold); color: var(--pc-800); margin-right: 40px; }
+  .footer__links { display: flex; gap: 24px; }
+  /* 디자인시스템 .text-12-regular 적용 */
+  .footer__links a { font-size: 13px; color: var(--bc-700); transition: color 0.15s; }
+  .footer__links a:hover { color: var(--pc-800); }
+  .footer__copy { margin-left: auto; font-size: 12px; color: var(--bc-500); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 1200px) {
+    .live-grid { grid-template-columns: repeat(2, 1fr); }
+    .pop-grid  { grid-template-columns: repeat(2, 1fr); }
+    .hero { grid-template-columns: 1fr; }
+    .hero__right { min-height: 320px; }
+  }
+  @media (max-width: 768px) {
+    .gnb__menu { display: none; }
+    .hero { padding: 32px 20px; }
+    .hero__title { font-size: 32px; }
+    .content { padding: 24px 20px 40px; }
+    .live-grid, .pop-grid { grid-template-columns: 1fr; }
+    .schedule-row { grid-template-columns: 80px 1fr; }
+    .schedule-cell:nth-child(n+3) { display: none; }
+    .footer__inner { flex-wrap: wrap; }
+    .footer__copy { margin-left: 0; flex-basis: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SVG Sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="i-search" viewBox="0 0 24 24">
+    <path d="M10.5 18a7.5 7.5 0 1 1 5.93-2.9l4.24 4.23-1.42 1.42-4.23-4.24A7.47 7.47 0 0 1 10.5 18Zm0-13a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z"/>
+  </symbol>
+  <symbol id="i-user" viewBox="0 0 24 24">
+    <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.3 0-8 1.65-8 5v1h16v-1c0-3.35-4.7-5-8-5Z"/>
+  </symbol>
+  <symbol id="i-play" viewBox="0 0 24 24">
+    <path d="M8 5v14l11-7L8 5Z"/>
+  </symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24">
+    <path d="M17 3H7a2 2 0 0 0-2 2v16l7-3 7 3V5a2 2 0 0 0-2-2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24">
+    <path d="M12 5C7 5 2.7 8.1 1 12c1.7 3.9 6 7 11 7s9.3-3.1 11-7c-1.7-3.9-6-7-11-7Zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+  </symbol>
+  <symbol id="i-alarm" viewBox="0 0 24 24">
+    <path d="M12 22a2 2 0 0 0 2-2h-4a2 2 0 0 0 2 2Zm6-6V11c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 1 0-3 0v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2Z"/>
+  </symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24">
+    <path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-close" viewBox="0 0 24 24">
+    <path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12 19 6.4Z"/>
+  </symbol>
+  <symbol id="i-share" viewBox="0 0 24 24">
+    <path d="M18 16.1c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 1 0-3-3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 1 0 0 6c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66a2.92 2.92 0 1 0 2.92-2.9Z"/>
+  </symbol>
+</svg>
+
+<!-- GNB -->
+<header class="gnb">
+  <div class="gnb__inner wrap">
+    <a href="#" class="gnb__logo">LIVE TV</a>
+    <nav class="gnb__menu">
+      <a href="#" class="gnb__menu-item">홈</a>
+      <a href="#" class="gnb__menu-item gnb__menu-item--active">라이브</a>
+      <a href="#" class="gnb__menu-item">VOD</a>
+      <a href="#" class="gnb__menu-item">편성표</a>
+      <a href="#" class="gnb__menu-item">채널</a>
+    </nav>
+    <div class="gnb__right">
+      <div class="search" id="search">
+        <button class="icon-btn search__toggle" aria-label="검색 열기" aria-expanded="false" id="searchToggle">
+          <svg class="icon"><use href="#i-search"/></svg>
+        </button>
+        <div class="search__field" role="search">
+          <svg class="icon search__field-icon"><use href="#i-search"/></svg>
+          <input type="text" class="search__input" id="searchInput"
+                 placeholder="채널, 프로그램을 검색하세요" autocomplete="off" />
+          <button class="search__close" aria-label="검색 닫기" id="searchClose">
+            <svg class="icon icon--sm"><use href="#i-close"/></svg>
+          </button>
+        </div>
+      </div>
+      <button class="icon-btn" aria-label="알림"><svg class="icon"><use href="#i-alarm"/></svg></button>
+      <button class="btn-primary">
+        <svg class="icon icon--sm"><use href="#i-user"/></svg>
+        로그인
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Hero Banner -->
+  <section class="hero">
+    <div class="hero__left">
+      <div class="hero__meta">
+        <span class="badge badge--live"><span class="dot"></span>LIVE</span>
+        <span class="hero__category">스포츠</span>
+        <span class="hero__channel">KBS1 · 9채널</span>
+      </div>
+      <h1 class="hero__title">2024 <em>파리</em><br/>올림픽 개막식</h1>
+      <p class="hero__desc">
+        세계인의 축제, 파리 올림픽 개막식을 생중계합니다.<br/>
+        현재 시청자 12만 4천 명이 함께하고 있습니다.
+      </p>
+      <div class="hero__buttons">
+        <button class="hero__btn-watch">
+          <svg class="icon icon--lg"><use href="#i-play"/></svg>
+          지금 시청하기
+        </button>
+        <button class="hero__btn-ghost">
+          <svg class="icon"><use href="#i-bookmark"/></svg>
+          저장
+        </button>
+        <button class="hero__btn-ghost" aria-label="공유">
+          <svg class="icon"><use href="#i-share"/></svg>
+        </button>
+      </div>
+      <div class="hero__stats">
+        <span class="hero__stat"><svg class="icon icon--sm"><use href="#i-eye"/></svg>124,000명 시청 중</span>
+        <span class="hero__stat">🔴 생방송 · 20:30 ~ 23:30</span>
+      </div>
+    </div>
+
+    <div class="hero__right">
+      <div class="hero__player">
+        <div class="hero__player-bg"></div>
+        <div class="hero__player-top">
+          <span class="badge badge--live"><span class="dot"></span>LIVE</span>
+          <span class="badge badge--viewer">
+            <svg class="icon icon--sm" style="width:12px;height:12px"><use href="#i-eye"/></svg>
+            124K
+          </span>
+        </div>
+        <button class="hero__play-btn" aria-label="재생">
+          <svg style="width:36px;height:36px;fill:currentColor;margin-left:4px"><use href="#i-play"/></svg>
+        </button>
+        <div class="hero__player-bottom">
+          <div class="hero__player-title">개막식 본행사 · 세느강 선수 입장</div>
+          <div class="hero__player-sub">KBS1 · 1시간 52분 경과</div>
+          <div class="hero__player-progress"><div class="hero__player-progress-fill"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Tabs -->
+  <nav class="tabs" role="tablist">
+    <a class="tab tab--active" role="tab" aria-selected="true">전체</a>
+    <a class="tab" role="tab">스포츠</a>
+    <a class="tab" role="tab">예능/드라마</a>
+    <a class="tab" role="tab">뉴스</a>
+    <a class="tab" role="tab">영화</a>
+    <a class="tab" role="tab">음악</a>
+    <a class="tab" role="tab">교육</a>
+    <a class="tab" role="tab">기타</a>
+  </nav>
+
+  <div class="content">
+
+    <!-- Section: 지금 라이브 중 -->
+    <section>
+      <header class="section-header">
+        <div class="section-header__left">
+          <h2 class="section-header__title">지금 라이브 중</h2>
+          <span class="section-header__meta"><span class="dot"></span>32개 채널 방송 중</span>
+        </div>
+        <a href="#" class="section-header__more">
+          전체보기
+          <svg class="icon icon--sm"><use href="#i-chevron-right"/></svg>
+        </a>
+      </header>
+      <div class="live-grid">
+        <article class="live-card">
+          <div class="live-card__thumb" data-channel="KBS1">
+            <span class="badge badge--live"><span class="dot"></span>LIVE</span>
+            <span class="badge badge--viewer"><svg class="icon icon--sm" style="width:12px;height:12px"><use href="#i-eye"/></svg>8.2만</span>
+            <span class="live-card__logo">KBS 1</span>
+          </div>
+          <div class="live-card__body">
+            <div class="live-card__meta">
+              <span class="live-card__channel">KBS1</span>
+              <span class="live-card__separator">•</span>
+              <span class="live-card__num">9번</span>
+            </div>
+            <div class="live-card__program">뉴스 9</div>
+            <div class="live-card__progress">
+              <div class="live-card__bar"><div class="live-card__bar-fill" style="width:65%"></div></div>
+              <div class="live-card__time"><span><strong>21:39</strong> · 39분 경과</span><span>21:00 ~ 22:00</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="live-card">
+          <div class="live-card__thumb" data-channel="MBC">
+            <span class="badge badge--live"><span class="dot"></span>LIVE</span>
+            <span class="badge badge--viewer"><svg class="icon icon--sm" style="width:12px;height:12px"><use href="#i-eye"/></svg>5.6만</span>
+            <span class="live-card__logo">MBC</span>
+          </div>
+          <div class="live-card__body">
+            <div class="live-card__meta">
+              <span class="live-card__channel">MBC</span>
+              <span class="live-card__separator">•</span>
+              <span class="live-card__num">11번</span>
+            </div>
+            <div class="live-card__program">나 혼자 산다</div>
+            <div class="live-card__progress">
+              <div class="live-card__bar"><div class="live-card__bar-fill" style="width:30%"></div></div>
+              <div class="live-card__time"><span><strong>22:36</strong> · 16분 경과</span><span>22:20 ~ 23:15</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="live-card">
+          <div class="live-card__thumb" data-channel="SBS">
+            <span class="badge badge--live"><span class="dot"></span>LIVE</span>
+            <span class="badge badge--viewer"><svg class="icon icon--sm" style="width:12px;height:12px"><use href="#i-eye"/></svg>4.1만</span>
+            <span class="live-card__logo">SBS</span>
+          </div>
+          <div class="live-card__body">
+            <div class="live-card__meta">
+              <span class="live-card__channel">SBS</span>
+              <span class="live-card__separator">•</span>
+              <span class="live-card__num">6번</span>
+            </div>
+            <div class="live-card__program">런닝맨</div>
+            <div class="live-card__progress">
+              <div class="live-card__bar"><div class="live-card__bar-fill" style="width:55%"></div></div>
+              <div class="live-card__time"><span><strong>21:55</strong> · 55분 경과</span><span>21:00 ~ 22:40</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="live-card">
+          <div class="live-card__thumb" data-channel="JTBC">
+            <span class="badge badge--live"><span class="dot"></span>LIVE</span>
+            <span class="badge badge--viewer"><svg class="icon icon--sm" style="width:12px;height:12px"><use href="#i-eye"/></svg>3.8만</span>
+            <span class="live-card__logo">JTBC</span>
+          </div>
+          <div class="live-card__body">
+            <div class="live-card__meta">
+              <span class="live-card__channel">JTBC</span>
+              <span class="live-card__separator">•</span>
+              <span class="live-card__num">15번</span>
+            </div>
+            <div class="live-card__program">뉴스룸</div>
+            <div class="live-card__progress">
+              <div class="live-card__bar"><div class="live-card__bar-fill" style="width:15%"></div></div>
+              <div class="live-card__time"><span><strong>22:09</strong> · 9분 경과</span><span>22:00 ~ 23:00</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Section: 인기 프로그램 -->
+    <section>
+      <header class="section-header">
+        <div class="section-header__left">
+          <h2 class="section-header__title">인기 프로그램</h2>
+          <span class="section-header__meta" style="color:var(--bc-700)">이번 주 TOP 6</span>
+        </div>
+        <a href="#" class="section-header__more">전체보기<svg class="icon icon--sm"><use href="#i-chevron-right"/></svg></a>
+      </header>
+      <div class="pop-grid">
+        <article class="pop-card">
+          <div class="pop-card__thumb" data-ch="tvN"><span class="badge badge--rank badge--rank-1">1</span><span class="pop-card__thumb-logo">tvN</span></div>
+          <div class="pop-card__body">
+            <span class="badge badge--genre badge--genre-drama">드라마</span>
+            <div class="pop-card__channel">tvN · 월화 드라마</div>
+            <div class="pop-card__title">눈물의 여왕</div>
+            <div class="pop-card__rating"><span class="stars">★★★★☆</span><span class="score">9.2</span></div>
+            <div class="pop-card__next">내일 토 22:00 방영</div>
+            <button class="pop-card__alarm"><svg class="icon icon--sm" style="width:14px;height:14px"><use href="#i-alarm"/></svg>알림 설정</button>
+          </div>
+        </article>
+
+        <article class="pop-card">
+          <div class="pop-card__thumb" data-ch="MBC"><span class="badge badge--rank badge--rank-2">2</span><span class="pop-card__thumb-logo">MBC</span></div>
+          <div class="pop-card__body">
+            <span class="badge badge--genre badge--genre-ent">예능</span>
+            <div class="pop-card__channel">MBC · 금요 예능</div>
+            <div class="pop-card__title">나 혼자 산다</div>
+            <div class="pop-card__rating"><span class="stars">★★★★☆</span><span class="score">8.8</span></div>
+            <div class="pop-card__next">매주 금 23:00 방영</div>
+            <button class="pop-card__alarm"><svg class="icon icon--sm" style="width:14px;height:14px"><use href="#i-alarm"/></svg>알림 설정</button>
+          </div>
+        </article>
+
+        <article class="pop-card">
+          <div class="pop-card__thumb" data-ch="SBS"><span class="badge badge--rank badge--rank-3">3</span><span class="pop-card__thumb-logo">SBS</span></div>
+          <div class="pop-card__body">
+            <span class="badge badge--genre badge--genre-ent">예능</span>
+            <div class="pop-card__channel">SBS · 일요 예능</div>
+            <div class="pop-card__title">런닝맨</div>
+            <div class="pop-card__rating"><span class="stars">★★★★☆</span><span class="score">8.5</span></div>
+            <div class="pop-card__next">매주 일 17:00 방영</div>
+            <button class="pop-card__alarm"><svg class="icon icon--sm" style="width:14px;height:14px"><use href="#i-alarm"/></svg>알림 설정</button>
+          </div>
+        </article>
+
+        <article class="pop-card">
+          <div class="pop-card__thumb" data-ch="KBS2"><span class="badge badge--rank">4</span><span class="pop-card__thumb-logo">KBS 2</span></div>
+          <div class="pop-card__body">
+            <span class="badge badge--genre badge--genre-ent">예능</span>
+            <div class="pop-card__channel">KBS2 · 주말 예능</div>
+            <div class="pop-card__title">1박 2일</div>
+            <div class="pop-card__rating"><span class="stars">★★★★☆</span><span class="score">8.3</span></div>
+            <div class="pop-card__next">매주 일 19:00 방영</div>
+            <button class="pop-card__alarm"><svg class="icon icon--sm" style="width:14px;height:14px"><use href="#i-alarm"/></svg>알림 설정</button>
+          </div>
+        </article>
+
+        <article class="pop-card">
+          <div class="pop-card__thumb" data-ch="JTBC"><span class="badge badge--rank">5</span><span class="pop-card__thumb-logo">JTBC</span></div>
+          <div class="pop-card__body">
+            <span class="badge badge--genre badge--genre-music">음악</span>
+            <div class="pop-card__channel">JTBC · 토요 음악</div>
+            <div class="pop-card__title">히든싱어</div>
+            <div class="pop-card__rating"><span class="stars">★★★★☆</span><span class="score">8.0</span></div>
+            <div class="pop-card__next">매주 토 22:30 방영</div>
+            <button class="pop-card__alarm"><svg class="icon icon--sm" style="width:14px;height:14px"><use href="#i-alarm"/></svg>알림 설정</button>
+          </div>
+        </article>
+
+        <article class="pop-card">
+          <div class="pop-card__thumb" data-ch="OCN"><span class="badge badge--rank">6</span><span class="pop-card__thumb-logo">OCN</span></div>
+          <div class="pop-card__body">
+            <span class="badge badge--genre badge--genre-drama">드라마</span>
+            <div class="pop-card__channel">OCN · 토요 드라마</div>
+            <div class="pop-card__title">보이스</div>
+            <div class="pop-card__rating"><span class="stars">★★★★☆</span><span class="score">7.9</span></div>
+            <div class="pop-card__next">매주 토 23:00 방영</div>
+            <button class="pop-card__alarm"><svg class="icon icon--sm" style="width:14px;height:14px"><use href="#i-alarm"/></svg>알림 설정</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Section: 오늘의 편성표 -->
+    <section>
+      <header class="section-header">
+        <div class="section-header__left">
+          <h2 class="section-header__title">오늘의 편성표</h2>
+          <span class="section-header__meta" style="color:var(--bc-700)">2024.04.17 · 지상파 · 종편</span>
+        </div>
+        <a href="#" class="section-header__more">전체 편성표<svg class="icon icon--sm"><use href="#i-chevron-right"/></svg></a>
+      </header>
+      <div class="schedule-table">
+        <div class="schedule-row schedule-row--header">
+          <div class="schedule-cell--header">채널</div>
+          <div class="schedule-cell--header">21:00</div>
+          <div class="schedule-cell--header">21:30</div>
+          <div class="schedule-cell--header">22:00</div>
+          <div class="schedule-cell--header">22:30</div>
+          <div class="schedule-cell--header">23:00</div>
+          <div class="schedule-cell--header">23:30</div>
+        </div>
+        <div class="schedule-row">
+          <div class="schedule-cell--channel"><span class="logo-chip">KBS1</span><span class="live-dot"></span></div>
+          <div class="prog-cell prog-cell--now">뉴스 9</div>
+          <div class="prog-cell prog-cell--span2">생방송 오늘저녁</div>
+          <div class="prog-cell prog-cell--span2">추적 60분</div>
+          <div></div>
+        </div>
+        <div class="schedule-row">
+          <div class="schedule-cell--channel"><span class="logo-chip">MBC</span><span class="live-dot"></span></div>
+          <div class="prog-cell prog-cell--now">나 혼자 산다</div>
+          <div class="prog-cell prog-cell--span2">마이 리틀 텔레비전</div>
+          <div class="prog-cell prog-cell--span2">휴먼다큐 사람이 좋다</div>
+          <div></div>
+        </div>
+        <div class="schedule-row">
+          <div class="schedule-cell--channel"><span class="logo-chip">SBS</span></div>
+          <div class="prog-cell prog-cell--span2">런닝맨</div>
+          <div></div>
+          <div class="prog-cell prog-cell--span2">그것이 알고싶다</div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="schedule-row">
+          <div class="schedule-cell--channel"><span class="logo-chip">tvN</span></div>
+          <div class="prog-cell prog-cell--span2">눈물의 여왕</div>
+          <div></div>
+          <div class="prog-cell prog-cell--span2">유퀴즈 온 더 블록</div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer__inner">
+    <span class="footer__logo">LIVE TV</span>
+    <div class="footer__links">
+      <a href="#">이용약관</a>
+      <a href="#">개인정보처리방침</a>
+      <a href="#">고객센터</a>
+      <a href="#">공지사항</a>
+    </div>
+    <span class="footer__copy">© 2024 Live TV. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    const search   = document.getElementById('search');
+    const toggle   = document.getElementById('searchToggle');
+    const closeBtn = document.getElementById('searchClose');
+    const input    = document.getElementById('searchInput');
+
+    function open() {
+      search.dataset.open = 'true';
+      toggle.setAttribute('aria-expanded', 'true');
+      requestAnimationFrame(() => input.focus());
+    }
+    function close() {
+      search.dataset.open = 'false';
+      toggle.setAttribute('aria-expanded', 'false');
+      input.value = '';
+      toggle.focus();
+    }
+
+    toggle.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+      if (e.key === 'Enter' && input.value.trim()) console.log('검색:', input.value.trim());
+    });
+    document.addEventListener('click', (e) => {
+      if (search.dataset.open === 'true' && !search.contains(e.target)) close();
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+/* ============================================================
+   Nexon Basic 1.0 Design System — Typography Tokens
+   Font: Noto Sans KR (한글/기본), Noto Sans (영문/숫자)
+   Weights: Light(300) / Regular(400) / Medium(500) / Bold(700)
+   Source: Figma / Nexon-Basic-1.0v / Typography page
+   ============================================================ */
+
+:root {
+  --font-family-base: 'Noto Sans KR', sans-serif;
+
+  /* Weight */
+  --font-weight-light:   300;
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-bold:    700;
+}
+
+/* ============================================================
+   Type Scale — Letter Spacing by Size Group
+   54/48/42px   → -0.5px
+   36/32px      → -0.45px  (36 medium은 예외: -1.26px)
+   28/24/20px   → -0.43px
+   18px         → -0.4px
+   16px         → -0.35px
+   14px         → -0.3px
+   12/11px      → -0.26px
+   ============================================================ */
+
+/* --- 54px -------------------------------------------------- */
+.text-54-light   { font-family: var(--font-family-base); font-size: 54px; font-weight: 300; line-height: 82px; letter-spacing: -0.5px; }
+.text-54-regular { font-family: var(--font-family-base); font-size: 54px; font-weight: 400; line-height: 82px; letter-spacing: -0.5px; }
+.text-54-medium  { font-family: var(--font-family-base); font-size: 54px; font-weight: 500; line-height: 82px; letter-spacing: -0.5px; }
+.text-54-bold    { font-family: var(--font-family-base); font-size: 54px; font-weight: 700; line-height: 82px; letter-spacing: -0.5px; }
+
+/* --- 48px -------------------------------------------------- */
+.text-48-light   { font-family: var(--font-family-base); font-size: 48px; font-weight: 300; line-height: 72px; letter-spacing: -0.5px; }
+.text-48-regular { font-family: var(--font-family-base); font-size: 48px; font-weight: 400; line-height: 72px; letter-spacing: -0.5px; }
+.text-48-medium  { font-family: var(--font-family-base); font-size: 48px; font-weight: 500; line-height: 72px; letter-spacing: -0.5px; }
+.text-48-bold    { font-family: var(--font-family-base); font-size: 48px; font-weight: 700; line-height: 72px; letter-spacing: -0.5px; }
+
+/* --- 42px -------------------------------------------------- */
+.text-42-light   { font-family: var(--font-family-base); font-size: 42px; font-weight: 300; line-height: 64px; letter-spacing: -0.5px; }
+.text-42-regular { font-family: var(--font-family-base); font-size: 42px; font-weight: 400; line-height: 64px; letter-spacing: -0.5px; }
+.text-42-medium  { font-family: var(--font-family-base); font-size: 42px; font-weight: 500; line-height: 64px; letter-spacing: -0.5px; }
+.text-42-bold    { font-family: var(--font-family-base); font-size: 42px; font-weight: 700; line-height: 64px; letter-spacing: -0.5px; }
+
+/* --- 36px -------------------------------------------------- */
+.text-36-light   { font-family: var(--font-family-base); font-size: 36px; font-weight: 300; line-height: 54px; letter-spacing: -0.45px; }
+.text-36-regular { font-family: var(--font-family-base); font-size: 36px; font-weight: 400; line-height: 54px; letter-spacing: -0.45px; }
+.text-36-medium  { font-family: var(--font-family-base); font-size: 36px; font-weight: 500; line-height: 54px; letter-spacing: -1.26px; } /* 예외 */
+.text-36-bold    { font-family: var(--font-family-base); font-size: 36px; font-weight: 700; line-height: 54px; letter-spacing: -0.5px; }
+
+/* --- 32px -------------------------------------------------- */
+.text-32-light   { font-family: var(--font-family-base); font-size: 32px; font-weight: 300; line-height: 48px; letter-spacing: -0.45px; }
+.text-32-regular { font-family: var(--font-family-base); font-size: 32px; font-weight: 400; line-height: 48px; letter-spacing: -0.45px; }
+.text-32-medium  { font-family: var(--font-family-base); font-size: 32px; font-weight: 500; line-height: 48px; letter-spacing: -0.45px; }
+.text-32-bold    { font-family: var(--font-family-base); font-size: 32px; font-weight: 700; line-height: 48px; letter-spacing: -0.45px; }
+
+/* --- 28px -------------------------------------------------- */
+.text-28-light   { font-family: var(--font-family-base); font-size: 28px; font-weight: 300; line-height: 42px; letter-spacing: -0.43px; }
+.text-28-regular { font-family: var(--font-family-base); font-size: 28px; font-weight: 400; line-height: 42px; letter-spacing: -0.43px; }
+.text-28-medium  { font-family: var(--font-family-base); font-size: 28px; font-weight: 500; line-height: 42px; letter-spacing: -0.43px; }
+.text-28-bold    { font-family: var(--font-family-base); font-size: 28px; font-weight: 700; line-height: 42px; letter-spacing: -0.43px; }
+
+/* --- 24px -------------------------------------------------- */
+.text-24-light   { font-family: var(--font-family-base); font-size: 24px; font-weight: 300; line-height: 36px; letter-spacing: -0.43px; }
+.text-24-regular { font-family: var(--font-family-base); font-size: 24px; font-weight: 400; line-height: 36px; letter-spacing: -0.43px; }
+.text-24-medium  { font-family: var(--font-family-base); font-size: 24px; font-weight: 500; line-height: 36px; letter-spacing: -0.43px; }
+.text-24-bold    { font-family: var(--font-family-base); font-size: 24px; font-weight: 700; line-height: 36px; letter-spacing: -0.43px; }
+
+/* --- 20px -------------------------------------------------- */
+.text-20-light   { font-family: var(--font-family-base); font-size: 20px; font-weight: 300; line-height: 30px; letter-spacing: -0.43px; }
+.text-20-regular { font-family: var(--font-family-base); font-size: 20px; font-weight: 400; line-height: 30px; letter-spacing: -0.43px; }
+.text-20-medium  { font-family: var(--font-family-base); font-size: 20px; font-weight: 500; line-height: 30px; letter-spacing: -0.43px; }
+.text-20-bold    { font-family: var(--font-family-base); font-size: 20px; font-weight: 700; line-height: 30px; letter-spacing: -0.43px; }
+
+/* --- 18px -------------------------------------------------- */
+.text-18-light   { font-family: var(--font-family-base); font-size: 18px; font-weight: 300; line-height: 28px; letter-spacing: -0.4px; }
+.text-18-regular { font-family: var(--font-family-base); font-size: 18px; font-weight: 400; line-height: 28px; letter-spacing: -0.4px; }
+.text-18-medium  { font-family: var(--font-family-base); font-size: 18px; font-weight: 500; line-height: 28px; letter-spacing: -0.4px; }
+.text-18-bold    { font-family: var(--font-family-base); font-size: 18px; font-weight: 700; line-height: 28px; letter-spacing: -0.4px; }
+
+/* --- 16px -------------------------------------------------- */
+.text-16-light   { font-family: var(--font-family-base); font-size: 16px; font-weight: 300; line-height: 24px; letter-spacing: -0.35px; }
+.text-16-regular { font-family: var(--font-family-base); font-size: 16px; font-weight: 400; line-height: 24px; letter-spacing: -0.35px; }
+.text-16-medium  { font-family: var(--font-family-base); font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: -0.35px; }
+.text-16-bold    { font-family: var(--font-family-base); font-size: 16px; font-weight: 700; line-height: 24px; letter-spacing: -0.35px; }
+
+/* --- 14px -------------------------------------------------- */
+.text-14-light   { font-family: var(--font-family-base); font-size: 14px; font-weight: 300; line-height: 22px; letter-spacing: -0.3px; }
+.text-14-regular { font-family: var(--font-family-base); font-size: 14px; font-weight: 400; line-height: 22px; letter-spacing: -0.3px; }
+.text-14-medium  { font-family: var(--font-family-base); font-size: 14px; font-weight: 500; line-height: 22px; letter-spacing: -0.3px; }
+.text-14-bold    { font-family: var(--font-family-base); font-size: 14px; font-weight: 700; line-height: 22px; letter-spacing: -0.3px; }
+
+/* --- 12px -------------------------------------------------- */
+.text-12-light   { font-family: var(--font-family-base); font-size: 12px; font-weight: 300; line-height: 18px; letter-spacing: -0.26px; }
+.text-12-regular { font-family: var(--font-family-base); font-size: 12px; font-weight: 400; line-height: 18px; letter-spacing: -0.26px; }
+.text-12-medium  { font-family: var(--font-family-base); font-size: 12px; font-weight: 500; line-height: 18px; letter-spacing: -0.26px; }
+.text-12-bold    { font-family: var(--font-family-base); font-size: 12px; font-weight: 700; line-height: 18px; letter-spacing: -0.26px; }
+
+/* --- 11px -------------------------------------------------- */
+.text-11-light   { font-family: var(--font-family-base); font-size: 11px; font-weight: 300; line-height: 18px; letter-spacing: -0.26px; }
+.text-11-regular { font-family: var(--font-family-base); font-size: 11px; font-weight: 400; line-height: 18px; letter-spacing: -0.26px; }
+.text-11-medium  { font-family: var(--font-family-base); font-size: 11px; font-weight: 500; line-height: 18px; letter-spacing: -0.26px; }
+.text-11-bold    { font-family: var(--font-family-base); font-size: 11px; font-weight: 700; line-height: 18px; letter-spacing: -0.26px; }
+
+/* ============================================================
+   Link Styles (text-decoration: underline)
+   11~24px, Light/Regular/Medium/Bold
+   ============================================================ */
+.link-24-light   { font-family: var(--font-family-base); font-size: 24px; font-weight: 300; line-height: 36px; letter-spacing: -0.43px; text-decoration: underline; }
+.link-24-regular { font-family: var(--font-family-base); font-size: 24px; font-weight: 400; line-height: 36px; letter-spacing: -0.43px; text-decoration: underline; }
+.link-24-medium  { font-family: var(--font-family-base); font-size: 24px; font-weight: 500; line-height: 36px; letter-spacing: -0.43px; text-decoration: underline; }
+.link-24-bold    { font-family: var(--font-family-base); font-size: 24px; font-weight: 700; line-height: 36px; letter-spacing: -0.43px; text-decoration: underline; }
+
+.link-20-light   { font-family: var(--font-family-base); font-size: 20px; font-weight: 300; line-height: 30px; letter-spacing: -0.43px; text-decoration: underline; }
+.link-20-regular { font-family: var(--font-family-base); font-size: 20px; font-weight: 400; line-height: 30px; letter-spacing: -0.43px; text-decoration: underline; }
+.link-20-medium  { font-family: var(--font-family-base); font-size: 20px; font-weight: 500; line-height: 30px; letter-spacing: -0.43px; text-decoration: underline; }
+.link-20-bold    { font-family: var(--font-family-base); font-size: 20px; font-weight: 700; line-height: 30px; letter-spacing: -0.43px; text-decoration: underline; }
+
+.link-18-light   { font-family: var(--font-family-base); font-size: 18px; font-weight: 300; line-height: 28px; letter-spacing: -0.4px; text-decoration: underline; }
+.link-18-regular { font-family: var(--font-family-base); font-size: 18px; font-weight: 400; line-height: 28px; letter-spacing: -0.4px; text-decoration: underline; }
+.link-18-medium  { font-family: var(--font-family-base); font-size: 18px; font-weight: 500; line-height: 28px; letter-spacing: -0.4px; text-decoration: underline; }
+.link-18-bold    { font-family: var(--font-family-base); font-size: 18px; font-weight: 700; line-height: 28px; letter-spacing: -0.4px; text-decoration: underline; }
+
+.link-16-light   { font-family: var(--font-family-base); font-size: 16px; font-weight: 300; line-height: 24px; letter-spacing: -0.35px; text-decoration: underline; }
+.link-16-regular { font-family: var(--font-family-base); font-size: 16px; font-weight: 400; line-height: 24px; letter-spacing: -0.35px; text-decoration: underline; }
+.link-16-medium  { font-family: var(--font-family-base); font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: -0.35px; text-decoration: underline; }
+.link-16-bold    { font-family: var(--font-family-base); font-size: 16px; font-weight: 700; line-height: 24px; letter-spacing: -0.35px; text-decoration: underline; }
+
+.link-14-light   { font-family: var(--font-family-base); font-size: 14px; font-weight: 300; line-height: 22px; letter-spacing: -0.3px; text-decoration: underline; }
+.link-14-regular { font-family: var(--font-family-base); font-size: 14px; font-weight: 400; line-height: 22px; letter-spacing: -0.3px; text-decoration: underline; }
+.link-14-medium  { font-family: var(--font-family-base); font-size: 14px; font-weight: 500; line-height: 22px; letter-spacing: -0.3px; text-decoration: underline; }
+.link-14-bold    { font-family: var(--font-family-base); font-size: 14px; font-weight: 700; line-height: 22px; letter-spacing: -0.3px; text-decoration: underline; }
+
+.link-12-light   { font-family: var(--font-family-base); font-size: 12px; font-weight: 300; line-height: 18px; letter-spacing: -0.26px; text-decoration: underline; }
+.link-12-regular { font-family: var(--font-family-base); font-size: 12px; font-weight: 400; line-height: 18px; letter-spacing: -0.26px; text-decoration: underline; }
+.link-12-medium  { font-family: var(--font-family-base); font-size: 12px; font-weight: 500; line-height: 18px; letter-spacing: -0.26px; text-decoration: underline; }
+.link-12-bold    { font-family: var(--font-family-base); font-size: 12px; font-weight: 700; line-height: 18px; letter-spacing: -0.26px; text-decoration: underline; }
+
+.link-11-light   { font-family: var(--font-family-base); font-size: 11px; font-weight: 300; line-height: 18px; letter-spacing: -0.26px; text-decoration: underline; }
+.link-11-regular { font-family: var(--font-family-base); font-size: 11px; font-weight: 400; line-height: 18px; letter-spacing: -0.26px; text-decoration: underline; }
+.link-11-medium  { font-family: var(--font-family-base); font-size: 11px; font-weight: 500; line-height: 18px; letter-spacing: -0.26px; text-decoration: underline; }
+.link-11-bold    { font-family: var(--font-family-base); font-size: 11px; font-weight: 700; line-height: 18px; letter-spacing: -0.26px; text-decoration: underline; }
